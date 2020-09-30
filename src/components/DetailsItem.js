@@ -104,7 +104,7 @@ export const DetailsItem = ({ title, data, linkTo }) => {
                         classes={{ root: classes.transactionSum }}
                         variant="h2"
                     >
-                        {data.amount} PROM
+                        {data.amount} BOT
                     </Typography>
                 </div>
                 <div className={classes.detailsItemFooterStatus}>

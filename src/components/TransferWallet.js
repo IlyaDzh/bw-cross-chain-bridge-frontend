@@ -95,7 +95,7 @@ export const TransferWallet = ({
             {/* {withCaption && (
                 <>
                     <Typography variant="caption" display="block">
-                        Commission fee is 11.11 PROM
+                        Commission fee is 11.11 BOT
                     </Typography>
                     <Typography variant="caption" display="block">
                         Please note that the transferred sum should not be less than
