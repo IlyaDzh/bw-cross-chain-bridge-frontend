@@ -1,0 +1,167 @@
+import React, { useState } from "react";
+import { inject, observer } from "mobx-react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import {
+    Button,
+    Dialog,
+    DialogContent,
+    DialogActions,
+    DialogTitle,
+    IconButton,
+    Typography,
+    makeStyles
+} from "@material-ui/core";
+
+import { CloseIcon } from "@/icons/CloseIcon";
+
+const useStyles = makeStyles(theme => ({
+    dialogPaper: {
+        margin: "15px",
+        maxWidth: "460px",
+        width: "100%"
+    },
+    transferDialog: {
+        position: "relative",
+        padding: "24px 32px 48px"
+    },
+    transferDialogCloseBtn: {
+        position: "absolute",
+        top: 0,
+        right: 0,
+        width: "40px",
+        height: "40px",
+        margin: "8px",
+        lineHeight: 0
+    },
+    transferDialogTitle: {
+        padding: 0
+    },
+    transferDialogContent: {
+        padding: "15px 0 0"
+    },
+    textDescription: {
+        marginBottom: "32px"
+    },
+    copyWrapper: {
+        display: "flex",
+        marginBottom: "32px"
+    },
+    disabledField: {
+        padding: "6px 16px",
+        border: `1px solid ${theme.palette.border.main}`,
+        borderRadius: "5px 0 0 5px",
+        overflow: "hidden"
+    },
+    copyBtn: {
+        borderRadius: "0 5px 5px 0",
+        marginLeft: "-1px"
+    },
+    qrcodeWrapper: {
+        maxWidth: "220px",
+        margin: "0 auto 32px",
+        "& > img": {
+            width: "100%"
+        }
+    },
+    dialogActionsButton: {
+        display: "block",
+        textAlign: "center",
+        padding: 0
+    }
+}));
+
+const _TransferDialog = ({
+    transferData,
+    transferDialogOpen,
+    setTransferDialogOpen
+}) => {
+    const classes = useStyles();
+    const [copied, setCopied] = useState(false);
+
+    const hadleCloseDialog = () => {
+        setTransferDialogOpen(false);
+        setCopied(false);
+    };
+
+    return (
+        <Dialog
+            open={transferDialogOpen}
+            onClose={hadleCloseDialog}
+            classes={{
+                paper: classes.dialogPaper
+            }}
+        >
+            <div className={classes.transferDialog}>
+                <IconButton
+                    onClick={hadleCloseDialog}
+                    className={classes.transferDialogCloseBtn}
+                >
+                    <CloseIcon />
+                </IconButton>
+                <DialogTitle
+                    className={classes.transferDialogTitle}
+                    disableTypography
+                >
+                    <Typography variant="h1" color="textPrimary">
+                        Transfer
+                    </Typography>
+                </DialogTitle>
+                <DialogContent className={classes.transferDialogContent}>
+                    <Typography
+                        classes={{ root: classes.textDescription }}
+                        variant="body2"
+                    >
+                        Please copy wallet address or use QR code to make a
+                        transaction
+                    </Typography>
+                    <div className={classes.copyWrapper}>
+                        <div className={classes.disabledField}>
+                            <Typography color="textSecondary" variant="body2" noWrap>
+                                {transferData.poolAddress}
+                            </Typography>
+                        </div>
+                        <CopyToClipboard
+                            text={transferData.poolAddress}
+                            onCopy={() => setCopied(true)}
+                        >
+                            <Button
+                                classes={{ root: classes.copyBtn }}
+                                color="primary"
+                                variant="outlined"
+                                size="small"
+                                disabled={copied}
+                                disableElevation
+                            >
+                                {copied ? "Copied" : "Copy"}
+                            </Button>
+                        </CopyToClipboard>
+                    </div>
+                    <div className={classes.qrcodeWrapper}>
+                        <img
+                            src={`https://chart.apis.google.com/chart?choe=UTF-8&chld=H&cht=qr&chs=200x200&chl=${transferData.poolAddress}`}
+                            alt="QR code"
+                        />
+                    </div>
+                </DialogContent>
+                <DialogActions className={classes.dialogActionsButton}>
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        size="large"
+                        onClick={hadleCloseDialog}
+                    >
+                        Ok
+                    </Button>
+                </DialogActions>
+            </div>
+        </Dialog>
+    );
+};
+
+const mapMobxToProps = ({ transfer }) => ({
+    transferData: transfer.transferData,
+    transferDialogOpen: transfer.transferDialogOpen,
+    setTransferDialogOpen: transfer.setTransferDialogOpen
+});
+
+export const TransferDialog = inject(mapMobxToProps)(observer(_TransferDialog));
