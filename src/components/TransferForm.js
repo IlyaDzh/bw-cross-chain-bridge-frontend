@@ -62,6 +62,8 @@ const _TransferForm = ({
     transferForm,
     transferFormErrors,
     setFormValue,
+    setFormToNode,
+    setFormFromNode,
     doTransfer,
     pending
 }) => {
@@ -72,9 +74,10 @@ const _TransferForm = ({
             <div className={classes.transferFormWallets}>
                 <TransferWallet
                     walletValue={transferForm.addressFrom}
+                    walletNode={transferForm.fromNode}
                     walletError={transferFormErrors.addressFrom}
                     onChangeInput={e => setFormValue("addressFrom", e.target.value)}
-                    onChangeSelect={e => setFormValue("fromNode", e.target.value)}
+                    onChangeSelect={e => setFormFromNode(e.target.value)}
                     inputLabel="Source Wallet Address"
                     withCaption
                 />
@@ -90,9 +93,10 @@ const _TransferForm = ({
                 </div>
                 <TransferWallet
                     walletValue={transferForm.addressTo}
+                    walletNode={transferForm.toNode}
                     walletError={transferFormErrors.addressTo}
                     onChangeInput={e => setFormValue("addressTo", e.target.value)}
-                    onChangeSelect={e => setFormValue("toNode", e.target.value)}
+                    onChangeSelect={e => setFormToNode(e.target.value)}
                     inputLabel="Target Wallet Address"
                 />
             </div>
@@ -126,6 +130,8 @@ const mapMobxToProps = ({ transfer }) => ({
     transferForm: transfer.transferForm,
     transferFormErrors: transfer.transferFormErrors,
     setFormValue: transfer.setFormValue,
+    setFormToNode: transfer.setFormToNode,
+    setFormFromNode: transfer.setFormFromNode,
     doTransfer: transfer.doTransfer,
     pending: transfer.pending
 });

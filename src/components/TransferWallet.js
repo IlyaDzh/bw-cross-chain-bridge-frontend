@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { TextField, MenuItem, Hidden, makeStyles } from "@material-ui/core";
 
 import { WalletIcon } from "@/icons/WalletIcon";
@@ -41,6 +41,7 @@ const useStyles = makeStyles(theme => ({
 
 export const TransferWallet = ({
     walletValue,
+    walletNode,
     walletError,
     onChangeInput,
     onChangeSelect,
@@ -48,12 +49,6 @@ export const TransferWallet = ({
     withCaption
 }) => {
     const classes = useStyles();
-    const [walletType, setWalletType] = useState(withCaption ? "ETH" : "BSC");
-
-    const handleChange = event => {
-        setWalletType(event.target.value);
-        onChangeSelect(event.target.value);
-    };
 
     return (
         <div className={classes.transferWalletWrapper}>
@@ -69,16 +64,12 @@ export const TransferWallet = ({
                 <TextField
                     select
                     label="Mainnet Type"
-                    value={walletType}
-                    onChange={handleChange}
+                    value={walletNode}
+                    onChange={onChangeSelect}
                     fullWidth
                 >
-                    <MenuItem value="ETH" disabled={!withCaption}>
-                        Ethereum Mainnet
-                    </MenuItem>
-                    <MenuItem value="BSC" disabled={withCaption}>
-                        Binance Smart Chain
-                    </MenuItem>
+                    <MenuItem value="ETH">Ethereum Mainnet</MenuItem>
+                    <MenuItem value="BSC">Binance Smart Chain</MenuItem>
                 </TextField>
             </div>
             <div className={classes.transferWalletAddress}>

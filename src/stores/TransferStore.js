@@ -108,6 +108,18 @@ export class TransferStore {
     };
 
     @action
+    setFormToNode = value => {
+        this.transferForm.toNode = value;
+        this.transferForm.fromNode = value === "ETH" ? "BSC" : "ETH";
+    };
+
+    @action
+    setFormFromNode = value => {
+        this.transferForm.fromNode = value;
+        this.transferForm.toNode = value === "ETH" ? "BSC" : "ETH";
+    };
+
+    @action
     setTransferDialogOpen = transferDialogOpen => {
         this.transferDialogOpen = transferDialogOpen;
         if (!transferDialogOpen) {
